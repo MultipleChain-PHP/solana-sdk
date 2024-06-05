@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MultipleChain\SolanaSDK\Programs;
+
+use MultipleChain\SolanaSDK\Program;
+
+class MetaplexProgram extends Program
+{
+    public const METAPLEX_PROGRAM_ID = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s';
+
+    /**
+     * @param string $pubKey
+     * @return array<mixed>|mixed
+     */
+    public function getProgramAccounts(string $pubKey): mixed
+    {
+        $magicOffsetNumber = 326; // 🤷‍♂️
+
+        return $this->client->call('getProgramAccounts', [
+            self::METAPLEX_PROGRAM_ID,
+            [
+                'encoding' => 'base64',
+                'filters' => [
+                    [
+                        'memcmp' => [
+                            'bytes' => $pubKey,
+                            'offset' => $magicOffsetNumber,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
+}
