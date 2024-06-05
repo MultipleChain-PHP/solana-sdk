@@ -1,5 +1,6 @@
 {
     "name": "multiplechain/solana-sdk",
+    "version": "0.1.0",
     "description": "Solana PHP SDK",
     "keywords": [
         "solana-php-sdk",
@@ -68,7 +69,10 @@
         "phpstan": "vendor/bin/phpstan analyse --memory-limit=2G --configuration=phpstan.neon"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
