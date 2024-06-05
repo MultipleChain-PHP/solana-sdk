@@ -1,7 +1,7 @@
 # Solana PHP SDK
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/multiplechain/solana-sdk.svg?style=flat-square)](https://packagist.org/packages/multiplechain/solana-sdk)
-[![GitHub Tests Action Status](https://github.com/MultipleChain-PHP/solana-sdk/actions/workflows/test-and-code-check.yaml/badge.svg?branch=master)](https://github.com/MultipleChain-PHP/solana-sdk/actions?query=workflow:test-and-code-check+branch%25master)
+[![GitHub Tests Action Status](https://github.com/MultipleChain-PHP/solana-sdk/actions/workflows/test-and-code-check.yaml/badge.svg?branch=alpha)](https://github.com/MultipleChain-PHP/solana-sdk/actions/workflows/test-and-code-check.yaml?query=workflow%3Atest-and-code-check)
 
 ---
 
