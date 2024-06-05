@@ -21,9 +21,6 @@ jobs:
           php-version: '8.1'
           coverage: xdebug
 
-      - name: Create data.json file
-        run: cp tests/data.example.json tests/data.json
-
       - name: Install dependencies
         run: |
           composer install
@@ -59,7 +56,7 @@ jobs:
         uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: MultipleChain-PHP/solana
+          slug: MultipleChain-PHP/solana-sdk
           files: './coverage/clover.xml'
 
       - name: Set PR status

@@ -135,9 +135,9 @@ class Transaction
     }
 
     /**
-     * @return PublicKey
+     * @return PublicKey|null
      */
-    public function getFeePayer(): PublicKey
+    public function getFeePayer(): ?PublicKey
     {
         return $this->feePayer;
     }
@@ -153,9 +153,9 @@ class Transaction
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRecentBlockhash(): string
+    public function getRecentBlockhash(): ?string
     {
         return $this->recentBlockhash;
     }

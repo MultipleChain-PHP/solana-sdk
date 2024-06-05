@@ -37,7 +37,7 @@ class Commitment
      */
     public static function finalized(): Commitment
     {
-        return new Commitment(static::FINALIZED);
+        return new Commitment(self::FINALIZED);
     }
 
     /**
@@ -45,7 +45,7 @@ class Commitment
      */
     public static function confirmed(): Commitment
     {
-        return new Commitment(static::CONFIRMED);
+        return new Commitment(self::CONFIRMED);
     }
 
     /**
@@ -53,7 +53,7 @@ class Commitment
      */
     public static function processed(): Commitment
     {
-        return new Commitment(static::PROCESSED);
+        return new Commitment(self::PROCESSED);
     }
 
     /**
