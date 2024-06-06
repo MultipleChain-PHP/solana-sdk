@@ -49,7 +49,7 @@ class SplTokenProgram extends Program
      * @param PublicKey|null $associatedTokenProgramId
      * @return PublicKey
      */
-    public function getAssociatedTokenAddress(
+    public static function getAssociatedTokenAddress(
         PublicKey $mint,
         PublicKey $owner,
         bool $allowOwnerOffCurve = false,
@@ -85,7 +85,7 @@ class SplTokenProgram extends Program
      * @param PublicKey|null $associatedTokenProgramId
      * @return TransactionInstruction
      */
-    public function buildAssociatedTokenAccountInstruction(
+    public static function buildAssociatedTokenAccountInstruction(
         PublicKey $payer,
         PublicKey $associatedToken,
         PublicKey $owner,
@@ -122,7 +122,7 @@ class SplTokenProgram extends Program
      * @param PublicKey|null $associatedTokenProgramId
      * @return TransactionInstruction
      */
-    public function createAssociatedTokenAccountInstruction(
+    public static function createAssociatedTokenAccountInstruction(
         PublicKey $payer,
         PublicKey $associatedToken,
         PublicKey $owner,
@@ -130,12 +130,12 @@ class SplTokenProgram extends Program
         ?PublicKey $programId = null,
         ?PublicKey $associatedTokenProgramId = null
     ): TransactionInstruction {
-        return $this->buildAssociatedTokenAccountInstruction(
+        return self::buildAssociatedTokenAccountInstruction(
             $payer,
             $associatedToken,
             $owner,
             $mint,
-            Buffer::from(0),
+            new Buffer(),
             $programId,
             $associatedTokenProgramId
         );
@@ -147,7 +147,7 @@ class SplTokenProgram extends Program
      * @param array<PublicKey|Keypair|Signer> $multiSigners
      * @return array<AccountMeta>
      */
-    public function addSigners(
+    public static function addSigners(
         array $keys,
         PublicKey $ownerOrAuthority,
         array $multiSigners,
@@ -173,7 +173,7 @@ class SplTokenProgram extends Program
      * @param PublicKey|null $programId
      * @return TransactionInstruction
      */
-    public function createTransferInstruction(
+    public static function createTransferInstruction(
         PublicKey $source,
         PublicKey $destination,
         PublicKey $owner,
@@ -188,7 +188,7 @@ class SplTokenProgram extends Program
             new AccountMeta($destination, false, true),
         ];
 
-        $keys = $this->addSigners($keys, $owner, $multiSigners);
+        $keys = self::addSigners($keys, $owner, $multiSigners);
 
         $data = [
             // uint32 @phpstan-ignore-next-line
@@ -213,7 +213,7 @@ class SplTokenProgram extends Program
      * @param PublicKey|null $programId
      * @return TransactionInstruction
      */
-    public function createApproveInstruction(
+    public static function createApproveInstruction(
         PublicKey $account,
         PublicKey $delegate,
         PublicKey $owner,
@@ -228,7 +228,7 @@ class SplTokenProgram extends Program
             new AccountMeta($delegate, false, false),
         ];
 
-        $keys = $this->addSigners($keys, $owner, $multiSigners);
+        $keys = self::addSigners($keys, $owner, $multiSigners);
 
         $data = [
             // uint32 @phpstan-ignore-next-line

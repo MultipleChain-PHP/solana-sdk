@@ -59,14 +59,14 @@ class Connection extends Program
 
     /**
      * @param string $pubKey
-     * @return array<mixed>
+     * @return array<mixed>|null
      */
-    public function getAccountInfo(string $pubKey): array
+    public function getAccountInfo(string $pubKey): ?array
     {
         $accountResponse = $this->client->call('getAccountInfo', [$pubKey])['value'];
 
         if (!$accountResponse) {
-            throw new AccountNotFoundException("API Error: Account {$pubKey} not found.");
+            return null;
         }
 
         return $accountResponse;
