@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MultipleChain\SolanaSDK;
 
+use MultipleChain\SolanaSDK\Parser;
 use Illuminate\Http\Client\Response;
 use MultipleChain\SolanaSDK\Util\Signer;
 use MultipleChain\SolanaSDK\Util\Commitment;
@@ -11,6 +12,20 @@ use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
 
 class Connection extends Program
 {
+    /**
+     * @var Parser
+     */
+    private Parser $parser;
+
+    /**
+     * @param SolanaRpcClient $client
+     */
+    public function __construct(SolanaRpcClient $client)
+    {
+        parent::__construct($client);
+        $this->parser = new Parser();
+    }
+
     /**
      * @param Commitment|null $commitment
      * @return array<mixed>
@@ -97,6 +112,22 @@ class Connection extends Program
         ];
 
         return $this->client->call('getTransaction', [$transactionSignature, $config]);
+    }
+
+    /**
+     * @param string $transactionSignature
+     * @param Commitment|null $commitment
+     * @return array<mixed>|null
+     */
+    public function getParsedTransaction(string $transactionSignature, ?Commitment $commitment = null): ?array
+    {
+        $result = $this->getTransaction($transactionSignature, $commitment);
+
+        if (!$result) {
+            return null;
+        }
+
+        return $this->parser->parseTransaction($result);
     }
 
     /**
