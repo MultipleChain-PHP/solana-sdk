@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MultipleChain\SolanaSDK\Parsers\Types;
+namespace MultipleChain\SolanaSDK\Types;
 
 class ParsedTransactionMeta
 {
@@ -385,7 +385,7 @@ class ParsedTransactionMeta
                 $data['postTokenBalances']
             ) : null)
             ->setLoadedAddresses(
-                $data['loadedAddresses']
+                ($data['loadedAddresses'] ?? false)
                     ? ($data['loadedAddresses'] instanceof LoadedAddresses
                         ? $data['loadedAddresses']
                         : LoadedAddresses::from($data['loadedAddresses']))

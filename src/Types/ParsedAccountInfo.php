@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MultipleChain\SolanaSDK\Parsers\Types;
+namespace MultipleChain\SolanaSDK\Types;
 
 use MultipleChain\SolanaSDK\PublicKey;
 use MultipleChain\SolanaSDK\Util\Buffer;

@@ -55,79 +55,65 @@ class ParsedTest extends TestCase
                         'index' => 2,
                         'instructions' => [
                             [
-                                'parsed' => null,
-                                // 'parsed' => [
-                                //     'info' => [
-                                //         'extensionTypes' => [
-                                //             'immutableOwner'
-                                //         ],
-                                //         'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx'
-                                //     ],
-                                //     'type' => 'getAccountDataSize'
-                                // ],
+                                'data' => null,
                                 'program' => 'spl-token',
                                 'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                                 'stackHeight' => 2,
-                                'data' => '84eT',
-                                'accounts' => [
-                                    '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx'
+                                'parsed' => [
+                                    'info' => [
+                                        'extensionTypes' => [
+                                            'immutableOwner'
+                                        ],
+                                        'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx'
+                                    ],
+                                    'type' => 'getAccountDataSize'
                                 ],
+                                'accounts' => []
                             ],
                             [
-                                'parsed' => null,
-                                // 'parsed' => [
-                                //     'info' => [
-                                //         'lamports' => 2039280,
-                                //         'newAccount' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
-                                //         'owner' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
-                                //         'source' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
-                                //         'space' => 165
-                                //     ],
-                                //     'type' => 'createAccount'
-                                // ],
+                                'data' => null,
                                 'program' => 'system',
                                 'programId' => '11111111111111111111111111111111',
                                 'stackHeight' => 2,
-                                'data' => '11119os1e9qSs2u7TsThXqkBSRVFxhmYaFKFZ1waB2X7armDmvK3p5GmLdUxYdg3h7QSrL',
-                                'accounts' => [
-                                    '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
-                                    'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5'
+                                'parsed' => [
+                                    'info' => [
+                                        'lamports' => 2039280,
+                                        'newAccount' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
+                                        'owner' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+                                        'source' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
+                                        'space' => 165
+                                    ],
+                                    'type' => 'createAccount'
                                 ],
+                                'accounts' => []
                             ],
                             [
-                                'parsed' => null,
-                                // 'parsed' => [
-                                //     'info' => [
-                                //         'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5'
-                                //     ],
-                                //     'type' => 'initializeImmutableOwner'
-                                // ],
+                                'data' => null,
                                 'program' => 'spl-token',
                                 'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                                 'stackHeight' => 2,
-                                'data' => 'P',
-                                'accounts' => [
-                                    'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5'
+                                'parsed' => [
+                                    'info' => [
+                                        'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5'
+                                    ],
+                                    'type' => 'initializeImmutableOwner'
                                 ],
+                                'accounts' => []
                             ],
                             [
-                                'parsed' => null,
-                                // 'parsed' => [
-                                //     'info' => [
-                                //         'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
-                                //         'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
-                                //         'owner' => '7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB'
-                                //     ],
-                                //     'type' => 'initializeAccount3'
-                                // ],
+                                'data' => null,
                                 'program' => 'spl-token',
                                 'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                                 'stackHeight' => 2,
-                                'accounts' => [
-                                    'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
-                                    '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx'
+                                'parsed' => [
+                                    'info' => [
+                                        'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
+                                        'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
+                                        'owner' => '7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB'
+                                    ],
+                                    'type' => 'initializeAccount3'
                                 ],
-                                'data' => '6TjUpNzczccucJQP4edH8k57xz8EkundpB46AHxTGDBM9',
+                                'accounts' => []
                             ]
                         ],
                     ]
@@ -229,10 +215,7 @@ class ParsedTest extends TestCase
                 'status' => [
                     'Ok' => null
                 ],
-                'loadedAddresses' => [
-                    'writable' => [],
-                    'readonly' => []
-                ]
+                'loadedAddresses' => null
             ],
             'transaction' => [
                 'message' => [
@@ -294,72 +277,58 @@ class ParsedTest extends TestCase
                     ],
                     'instructions' => [
                         [
-                            'parsed' => null,
                             'programId' => 'ComputeBudget111111111111111111111111111111',
                             'accounts' => [],
                             'data' => '3s2DQSEX3t4P',
+                            'parsed' => null,
                             'program' => null,
                             'stackHeight' => null
                         ],
                         [
-                            'parsed' => null,
                             'programId' => 'ComputeBudget111111111111111111111111111111',
                             'accounts' => [],
                             'data' => 'HMypLP',
+                            'parsed' => null,
                             'program' => null,
                             'stackHeight' => null
                         ],
                         [
-                            'parsed' => null,
-                            // 'parsed' => [
-                            //     'info' => [
-                            //         'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
-                            //         'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
-                            //         'source' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
-                            //         'systemProgram' => '11111111111111111111111111111111',
-                            //         'tokenProgram' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
-                            //         'wallet' => '7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB'
-                            //     ],
-                            //     'type' => 'create'
-                            // ],
-                            'programId' => 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
-                            'accounts' => [
-                                '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
-                                'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
-                                "7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB",
-                                "2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx",
-                                "11111111111111111111111111111111",
-                                "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-                            ],
                             'data' => null,
+                            'programId' => 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+                            'accounts' => [],
+                            'parsed' => [
+                                'info' => [
+                                    'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
+                                    'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
+                                    'source' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
+                                    'systemProgram' => '11111111111111111111111111111111',
+                                    'tokenProgram' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+                                    'wallet' => '7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB'
+                                ],
+                                'type' => 'create'
+                            ],
                             'program' => 'spl-associated-token-account',
                             'stackHeight' => null
                         ],
                         [
-                            'parsed' => null,
-                            // 'parsed' => [
-                            //     'info' => [
-                            //         'authority' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
-                            //         'destination' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
-                            //         'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
-                            //         'source' => 'DFZs5Z27MRxEatmCX3XjgrtsvH3GJK9xyffwN8MWmpgC',
-                            //         'tokenAmount' => [
-                            //             'amount' => '5000000000000',
-                            //             'decimals' => 8,
-                            //             'uiAmount' => 50000,
-                            //             'uiAmountString' => '50000'
-                            //         ]
-                            //     ],
-                            //     'type' => 'transferChecked'
-                            // ],
+                            'data' => null,
                             'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
-                            'accounts' => [
-                                "DFZs5Z27MRxEatmCX3XjgrtsvH3GJK9xyffwN8MWmpgC",
-                                "2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx",
-                                "GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5",
-                                "37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ"
+                            'accounts' => [],
+                            'parsed' => [
+                                'info' => [
+                                    'authority' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
+                                    'destination' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
+                                    'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
+                                    'source' => 'DFZs5Z27MRxEatmCX3XjgrtsvH3GJK9xyffwN8MWmpgC',
+                                    'tokenAmount' => [
+                                        'amount' => '5000000000000',
+                                        'decimals' => 8,
+                                        'uiAmount' => 50000,
+                                        'uiAmountString' => '50000'
+                                    ]
+                                ],
+                                'type' => 'transferChecked'
                             ],
-                            'data' => 'g7BNnsTEuYro1',
                             'program' => 'spl-token',
                             'stackHeight' => null
                         ],
@@ -390,21 +359,21 @@ class ParsedTest extends TestCase
         return array_filter($input, fn ($value) => null !== $value);
     }
 
-    // /**
-    //  * @return void
-    //  */
-    // public function testTokenTransferTx(): void
-    // {
-    //     $result = $this->connection->getParsedTransaction($this->tokenTransferTx);
+    /**
+     * @return void
+     */
+    public function testTokenTransferTx(): void
+    {
+        $result = $this->connection->getParsedTransaction($this->tokenTransferTx);
 
-    //     if (!$result) {
-    //         $this->fail('Failed to get parsed transaction');
-    //     }
+        if (!$result) {
+            $this->fail('Failed to get parsed transaction');
+        }
 
-    //     $expectedResult = $this->getExpectedTokenTxResult();
+        $expectedResult = $this->getExpectedTokenTxResult();
 
-    //     $this->assertEquals($result->toArray(), $expectedResult);
-    // }
+        $this->assertEquals($result->toArray(), $expectedResult);
+    }
 
     /**
      * @return void

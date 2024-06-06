@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MultipleChain\SolanaSDK\Parsers\Types;
+namespace MultipleChain\SolanaSDK\Types;
 
 class ParsedMessage
 {
@@ -158,7 +158,7 @@ class ParsedMessage
                 $data['instructions']
             ))
             ->setRecentBlockhash($data['recentBlockhash'])
-            ->setAddressTableLookups($data['addressTableLookups'] ? array_map(
+            ->setAddressTableLookups(($data['addressTableLookups'] ?? false) ? array_map(
                 fn (array|ParsedAddressTableLookup $addressTableLookup)
                 => ParsedAddressTableLookup::from($addressTableLookup),
                 $data['addressTableLookups']

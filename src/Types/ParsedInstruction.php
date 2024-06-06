@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MultipleChain\SolanaSDK\Parsers\Types;
+namespace MultipleChain\SolanaSDK\Types;
 
 use MultipleChain\SolanaSDK\PublicKey;
 
@@ -204,10 +204,10 @@ class ParsedInstruction
         $programId = $data['programId'];
 
         return (new self())
-            ->setAccounts($data['accounts'])
             ->setData($data['data'] ?? null)
             ->setParsed($data['parsed'] ?? null)
             ->setProgram($data['program'] ?? null)
+            ->setAccounts($data['accounts'] ?? [])
             ->setStackHeight($data['stackHeight'] ?? null)
             ->setProgramId(
                 $programId instanceof PublicKey

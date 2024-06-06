@@ -27,21 +27,6 @@ class SystemProgram extends Program
 
     /**
      * @param string $pubKey
-     * @return array<mixed>
-     */
-    public function getAccountInfo(string $pubKey): array
-    {
-        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])['value'];
-
-        if (! $accountResponse) {
-            throw new AccountNotFoundException("API Error: Account {$pubKey} not found.");
-        }
-
-        return $accountResponse;
-    }
-
-    /**
-     * @param string $pubKey
      * @return float
      */
     public function getBalance(string $pubKey): float

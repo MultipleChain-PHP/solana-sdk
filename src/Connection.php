@@ -4,28 +4,21 @@ declare(strict_types=1);
 
 namespace MultipleChain\SolanaSDK;
 
-use MultipleChain\SolanaSDK\Parser;
 use Illuminate\Http\Client\Response;
 use MultipleChain\SolanaSDK\Util\Signer;
 use MultipleChain\SolanaSDK\Util\Commitment;
-use MultipleChain\SolanaSDK\Parsers\Types\ParsedAccountInfo;
+use MultipleChain\SolanaSDK\Types\ParsedAccountInfo;
+use MultipleChain\SolanaSDK\Types\ParsedTransactionWithMeta;
 use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
-use MultipleChain\SolanaSDK\Parsers\Types\ParsedTransactionWithMeta;
 
 class Connection extends Program
 {
-    /**
-     * @var Parser
-     */
-    private Parser $parser;
-
     /**
      * @param SolanaRpcClient $client
      */
     public function __construct(SolanaRpcClient $client)
     {
         parent::__construct($client);
-        $this->parser = new Parser();
     }
 
     /**
@@ -146,7 +139,7 @@ class Connection extends Program
             return null;
         }
 
-        return $this->parser->parseTransaction($result);
+        return ParsedTransactionWithMeta::from($result);
     }
 
     /**
@@ -161,7 +154,7 @@ class Connection extends Program
             return null;
         }
 
-        return $this->parser->parseAccountInfo($accountResponse);
+        return ParsedAccountInfo::from($accountResponse);
     }
 
     /**
