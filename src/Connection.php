@@ -74,6 +74,24 @@ class Connection extends Program
 
     /**
      * @param string $pubKey
+     * @return array<mixed>
+     */
+    public function getTokenLargestAccounts(string $pubKey): array
+    {
+        return $this->client->call('getTokenLargestAccounts', [$pubKey])['value'];
+    }
+
+    /**
+     * @param string $pubKey
+     * @return array<mixed>
+     */
+    public function getTokenSupply(string $pubKey): array
+    {
+        return $this->client->call('getTokenSupply', [$pubKey])['value'];
+    }
+
+    /**
+     * @param string $pubKey
      * @return float
      */
     public function getBalance(string $pubKey): float

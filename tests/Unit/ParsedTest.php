@@ -32,6 +32,8 @@ class ParsedTest extends TestCase
 
     private string $walletAddress = 'gEbjuPsW9xwKpUdQ69khDP3kNEw17HTSmLCMu1S9Msm';
 
+    private string $nftId = 'FxN19KB5UeZJFwxLFgT57WvYYXYhBFKxVumfq37xU4Ck';
+
     /**
      * @return void
      */
@@ -438,5 +440,25 @@ class ParsedTest extends TestCase
                 ]
             ]
         ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testTokenLargestAccounts(): void
+    {
+        $result = $this->connection->getTokenLargestAccounts($this->nftId);
+
+        $this->assertEquals($result[0]['address'], '3WdxNZnmmcFCNtW7VixRZJNtK1CKpN8GK1kpFReaEZMd');
+    }
+
+    /**
+     * @return void
+     */
+    public function testTokenSupply(): void
+    {
+        $result = $this->connection->getTokenSupply($this->splTokenAddress);
+
+        $this->assertEquals($result['uiAmount'], 100000000000);
     }
 }
