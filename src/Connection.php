@@ -100,6 +100,50 @@ class Connection extends Program
     }
 
     /**
+     * @return int
+     */
+    public function getSlot(): int
+    {
+        return $this->client->call('getSlot')['value'];
+    }
+
+    /**
+     * Confirm a transaction by signature.
+     *
+     * @param string $signature
+     * @param Commitment|null $commitment
+     * @param int $timeout
+     * @return bool
+     */
+    public function confirmTransaction(string $signature, ?Commitment $commitment = null, int $timeout = 60000): bool
+    {
+        $startTime = microtime(true);
+        $latestBlockhashInfo = $this->getLatestBlockhash($commitment);
+        $lastValidBlockHeight = $latestBlockhashInfo['lastValidBlockHeight'];
+
+        while ((microtime(true) - $startTime) * 1000 < $timeout) {
+            $transactionResult = $this->getTransaction($signature, $commitment);
+
+            if (null !== $transactionResult) {
+                if (isset($transactionResult['meta']['err']) && null !== $transactionResult['meta']['err']) {
+                    return false;
+                }
+                return true;
+            }
+
+            $currentBlockHeight = $this->getSlot();
+            if ($currentBlockHeight > $lastValidBlockHeight) {
+                return false;
+            }
+
+            // Wait for a while before retrying
+            usleep(500000); // 500ms
+        }
+
+        throw new \Exception('Transaction confirmation timed out');
+    }
+
+    /**
      * @param string $transactionSignature
      * @return array<mixed>|null
      */

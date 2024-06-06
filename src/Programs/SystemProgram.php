@@ -8,7 +8,6 @@ use MultipleChain\SolanaSDK\Program;
 use MultipleChain\SolanaSDK\PublicKey;
 use MultipleChain\SolanaSDK\Util\AccountMeta;
 use MultipleChain\SolanaSDK\TransactionInstruction;
-use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
 
 class SystemProgram extends Program
 {
