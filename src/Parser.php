@@ -7,10 +7,12 @@ namespace MultipleChain\SolanaSDK;
 use MultipleChain\Utils;
 use MultipleChain\Utils\Number;
 use MultipleChain\SolanaSDK\Parsers\Transaction;
+use MultipleChain\SolanaSDK\Parsers\AccountInfo;
 
 class Parser
 {
     use Transaction;
+    use AccountInfo;
 
     /**
      * @var array<string>

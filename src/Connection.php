@@ -8,6 +8,7 @@ use MultipleChain\SolanaSDK\Parser;
 use Illuminate\Http\Client\Response;
 use MultipleChain\SolanaSDK\Util\Signer;
 use MultipleChain\SolanaSDK\Util\Commitment;
+use MultipleChain\SolanaSDK\Parsers\Types\ParsedAccountInfo;
 use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
 use MultipleChain\SolanaSDK\Parsers\Types\ParsedTransactionWithMeta;
 
@@ -70,9 +71,9 @@ class Connection extends Program
      */
     public function getAccountInfo(string $pubKey): array
     {
-        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])['value'];
+        $accountResponse = $this->client->call('getAccountInfo', [$pubKey])['value'];
 
-        if (! $accountResponse) {
+        if (!$accountResponse) {
             throw new AccountNotFoundException("API Error: Account {$pubKey} not found.");
         }
 
@@ -116,6 +117,17 @@ class Connection extends Program
     }
 
     /**
+     * @deprecated
+     * @param Commitment|null $commitment
+     * @return array<mixed>
+     * @throws Exceptions\GenericException|Exceptions\MethodNotFoundException|Exceptions\InvalidIdResponseException
+     */
+    public function getRecentBlockhash(?Commitment $commitment = null): array
+    {
+        return $this->client->call('getRecentBlockhash', array_filter([$commitment]))['value'];
+    }
+
+    /**
      * @param string $transactionSignature
      * @param Commitment|null $commitment
      * @return ParsedTransactionWithMeta|null
@@ -124,7 +136,11 @@ class Connection extends Program
         string $transactionSignature,
         ?Commitment $commitment = null
     ): ?ParsedTransactionWithMeta {
-        $result = $this->getTransaction($transactionSignature, $commitment);
+        $result = $this->client->call('getTransaction', [$transactionSignature, [
+            "encoding" => "jsonParsed",
+            "maxSupportedTransactionVersion" => 0,
+            "commitment" => $this->getCommitmentString($commitment),
+        ]]);
 
         if (!$result) {
             return null;
@@ -134,14 +150,18 @@ class Connection extends Program
     }
 
     /**
-     * @deprecated
-     * @param Commitment|null $commitment
-     * @return array<mixed>
-     * @throws Exceptions\GenericException|Exceptions\MethodNotFoundException|Exceptions\InvalidIdResponseException
+     * @param string $pubKey
+     * @return ParsedAccountInfo
      */
-    public function getRecentBlockhash(?Commitment $commitment = null): array
+    public function getParsedAccountInfo(string $pubKey): ?ParsedAccountInfo
     {
-        return $this->client->call('getRecentBlockhash', array_filter([$commitment]))['value'];
+        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])['value'];
+
+        if (!$accountResponse) {
+            return null;
+        }
+
+        return $this->parser->parseAccountInfo($accountResponse);
     }
 
     /**

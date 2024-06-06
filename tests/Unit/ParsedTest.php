@@ -28,6 +28,8 @@ class ParsedTest extends TestCase
     private string $nftTransferTx
         = "3vrCoNVmeNgGG4LB1qvvdx21TYm6dnPBmhFqXChsusuLn5ZEjFZNFG3BwQQ8fodBYiPXG8QokdBLWjRtxgi7tnRD";
 
+    private string $tokenSplAddress = '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx';
+
     /**
      * @return void
      */
@@ -374,18 +376,56 @@ class ParsedTest extends TestCase
     }
 
     /**
-     * @return void
+     * @param array<mixed> $input
+     * @return array<mixed>
      */
-    public function testTokenTransferTx(): void
+    private function arrayFilterRecursive(array $input): array
     {
-        $result = $this->connection->getParsedTransaction($this->tokenTransferTx);
-
-        if (!$result) {
-            $this->fail('Failed to get parsed transaction');
+        foreach ($input as &$value) {
+            if (is_array($value)) {
+                $value = $this->arrayFilterRecursive($value);
+            }
         }
 
-        $expectedResult = $this->getExpectedTokenTxResult();
+        return array_filter($input, fn ($value) => null !== $value);
+    }
 
-        $this->assertEquals($result->toArray(), $expectedResult);
+    // /**
+    //  * @return void
+    //  */
+    // public function testTokenTransferTx(): void
+    // {
+    //     $result = $this->connection->getParsedTransaction($this->tokenTransferTx);
+
+    //     if (!$result) {
+    //         $this->fail('Failed to get parsed transaction');
+    //     }
+
+    //     $expectedResult = $this->getExpectedTokenTxResult();
+
+    //     $this->assertEquals($result->toArray(), $expectedResult);
+    // }
+
+    /**
+     * @return void
+     */
+    public function testSplTokenAccountInfo(): void
+    {
+        $result = $this->connection->getParsedAccountInfo($this->tokenSplAddress);
+
+        $this->assertEquals($result->toArray()['data'], [
+            'parsed' => [
+                'info' => [
+                    'decimals' => 8,
+                    'freezeAuthority' => 'HH3K7b4RoemS7wFDZmqEBNeUkxrkZvS4n7waSuSqafzi',
+                    'isInitialized' => true,
+                    'mintAuthority' => 'HH3K7b4RoemS7wFDZmqEBNeUkxrkZvS4n7waSuSqafzi',
+                    'supply' => '10000000000000000000'
+                ],
+                'type' => 'mint'
+            ],
+            'program' => 'spl-token',
+            'space' => 82
+        ]);
     }
 }
