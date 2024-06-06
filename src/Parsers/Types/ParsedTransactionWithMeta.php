@@ -161,16 +161,20 @@ class ParsedTransactionWithMeta
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
             ->setSlot($data['slot'])
-            ->setVersion($data['version'])
-            ->setBlockTime($data['blockTime'])
-            ->setTransaction(ParsedTransaction::fromArray($data['transaction']))
-            ->setMeta($data['meta'] ? ParsedTransactionMeta::fromArray($data['meta']) : null);
+            ->setVersion($data['version'] ?? 0)
+            ->setBlockTime($data['blockTime'] ?? null)
+            ->setTransaction(ParsedTransaction::from($data['transaction']))
+            ->setMeta($data['meta'] ? ParsedTransactionMeta::from($data['meta']) : null);
     }
 }

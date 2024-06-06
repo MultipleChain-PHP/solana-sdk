@@ -132,15 +132,19 @@ class TokenAmount
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
             ->setAmount($data['amount'])
             ->setDecimals($data['decimals'])
-            ->setUiAmount($data['uiAmount'])
-            ->setUiAmountString($data['uiAmountString']);
+            ->setUiAmount($data['uiAmount'] ?? null)
+            ->setUiAmountString($data['uiAmountString'] ?? null);
     }
 }

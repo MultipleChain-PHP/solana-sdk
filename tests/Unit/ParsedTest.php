@@ -53,6 +53,7 @@ class ParsedTest extends TestCase
                         'index' => 2,
                         'instructions' => [
                             [
+                                'parsed' => null,
                                 // 'parsed' => [
                                 //     'info' => [
                                 //         'extensionTypes' => [
@@ -63,7 +64,7 @@ class ParsedTest extends TestCase
                                 //     'type' => 'getAccountDataSize'
                                 // ],
                                 'program' => 'spl-token',
-                                'programId' => new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+                                'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                                 'stackHeight' => 2,
                                 'data' => '84eT',
                                 'accounts' => [
@@ -71,6 +72,7 @@ class ParsedTest extends TestCase
                                 ],
                             ],
                             [
+                                'parsed' => null,
                                 // 'parsed' => [
                                 //     'info' => [
                                 //         'lamports' => 2039280,
@@ -82,7 +84,7 @@ class ParsedTest extends TestCase
                                 //     'type' => 'createAccount'
                                 // ],
                                 'program' => 'system',
-                                'programId' => new PublicKey('11111111111111111111111111111111'),
+                                'programId' => '11111111111111111111111111111111',
                                 'stackHeight' => 2,
                                 'data' => '11119os1e9qSs2u7TsThXqkBSRVFxhmYaFKFZ1waB2X7armDmvK3p5GmLdUxYdg3h7QSrL',
                                 'accounts' => [
@@ -91,6 +93,7 @@ class ParsedTest extends TestCase
                                 ],
                             ],
                             [
+                                'parsed' => null,
                                 // 'parsed' => [
                                 //     'info' => [
                                 //         'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5'
@@ -98,7 +101,7 @@ class ParsedTest extends TestCase
                                 //     'type' => 'initializeImmutableOwner'
                                 // ],
                                 'program' => 'spl-token',
-                                'programId' => new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+                                'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                                 'stackHeight' => 2,
                                 'data' => 'P',
                                 'accounts' => [
@@ -106,6 +109,7 @@ class ParsedTest extends TestCase
                                 ],
                             ],
                             [
+                                'parsed' => null,
                                 // 'parsed' => [
                                 //     'info' => [
                                 //         'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
@@ -115,7 +119,7 @@ class ParsedTest extends TestCase
                                 //     'type' => 'initializeAccount3'
                                 // ],
                                 'program' => 'spl-token',
-                                'programId' => new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+                                'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                                 'stackHeight' => 2,
                                 'accounts' => [
                                     'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
@@ -224,63 +228,63 @@ class ParsedTest extends TestCase
                     'Ok' => null
                 ],
                 'loadedAddresses' => [
-                    'readonly' => [],
-                    'writable' => []
+                    'writable' => [],
+                    'readonly' => []
                 ]
             ],
             'transaction' => [
                 'message' => [
                     'accountKeys' => [
                         [
-                            'pubkey' => new PublicKey('37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ'),
+                            'pubkey' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
                             'signer' => true,
                             'writable' => true,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('DFZs5Z27MRxEatmCX3XjgrtsvH3GJK9xyffwN8MWmpgC'),
+                            'pubkey' => 'DFZs5Z27MRxEatmCX3XjgrtsvH3GJK9xyffwN8MWmpgC',
                             'signer' => false,
                             'writable' => true,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5'),
+                            'pubkey' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
                             'signer' => false,
                             'writable' => true,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('11111111111111111111111111111111'),
+                            'pubkey' => '11111111111111111111111111111111',
                             'signer' => false,
                             'writable' => false,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx'),
+                            'pubkey' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
                             'signer' => false,
                             'writable' => false,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB'),
+                            'pubkey' => '7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB',
                             'signer' => false,
                             'writable' => false,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'),
+                            'pubkey' => 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
                             'signer' => false,
                             'writable' => false,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('ComputeBudget111111111111111111111111111111'),
+                            'pubkey' => 'ComputeBudget111111111111111111111111111111',
                             'signer' => false,
                             'writable' => false,
                             'source' => 'transaction'
                         ],
                         [
-                            'pubkey' => new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+                            'pubkey' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                             'signer' => false,
                             'writable' => false,
                             'source' => 'transaction'
@@ -288,20 +292,23 @@ class ParsedTest extends TestCase
                     ],
                     'instructions' => [
                         [
-                            'programId' => new PublicKey('ComputeBudget111111111111111111111111111111'),
+                            'parsed' => null,
+                            'programId' => 'ComputeBudget111111111111111111111111111111',
                             'accounts' => [],
                             'data' => '3s2DQSEX3t4P',
                             'program' => null,
                             'stackHeight' => null
                         ],
                         [
-                            'programId' => new PublicKey('ComputeBudget111111111111111111111111111111'),
+                            'parsed' => null,
+                            'programId' => 'ComputeBudget111111111111111111111111111111',
                             'accounts' => [],
                             'data' => 'HMypLP',
                             'program' => null,
                             'stackHeight' => null
                         ],
                         [
+                            'parsed' => null,
                             // 'parsed' => [
                             //     'info' => [
                             //         'account' => 'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
@@ -313,20 +320,21 @@ class ParsedTest extends TestCase
                             //     ],
                             //     'type' => 'create'
                             // ],
-                            'programId' => new PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'),
+                            'programId' => 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
                             'accounts' => [
-                                new PublicKey("37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ"),
-                                new PublicKey("GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5"),
-                                new PublicKey("7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB"),
-                                new PublicKey("2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx"),
-                                new PublicKey("11111111111111111111111111111111"),
-                                new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+                                '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
+                                'GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5',
+                                "7bn9So6CKmdn2vHYZU5oG6gaVEewW3N7U8vJoNmSv2vB",
+                                "2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx",
+                                "11111111111111111111111111111111",
+                                "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
                             ],
                             'data' => null,
                             'program' => 'spl-associated-token-account',
                             'stackHeight' => null
                         ],
                         [
+                            'parsed' => null,
                             // 'parsed' => [
                             //     'info' => [
                             //         'authority' => '37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ',
@@ -342,12 +350,12 @@ class ParsedTest extends TestCase
                             //     ],
                             //     'type' => 'transferChecked'
                             // ],
-                            'programId' => new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+                            'programId' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
                             'accounts' => [
-                                new PublicKey("DFZs5Z27MRxEatmCX3XjgrtsvH3GJK9xyffwN8MWmpgC"),
-                                new PublicKey("2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx"),
-                                new PublicKey("GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5"),
-                                new PublicKey("37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ")
+                                "DFZs5Z27MRxEatmCX3XjgrtsvH3GJK9xyffwN8MWmpgC",
+                                "2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx",
+                                "GjaVSinePTeafvA5HG9qwF59jCHcK1t42E2dNvgggSr5",
+                                "37p742pby4ACHiGcT3d58gsjmC3Kd9bH2L89E3hY8FHZ"
                             ],
                             'data' => 'g7BNnsTEuYro1',
                             'program' => 'spl-token',
@@ -368,12 +376,16 @@ class ParsedTest extends TestCase
     /**
      * @return void
      */
-    public function testSolTransferTx(): void
+    public function testTokenTransferTx(): void
     {
         $result = $this->connection->getParsedTransaction($this->tokenTransferTx);
 
+        if (!$result) {
+            $this->fail('Failed to get parsed transaction');
+        }
+
         $expectedResult = $this->getExpectedTokenTxResult();
 
-        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($result->toArray(), $expectedResult);
     }
 }

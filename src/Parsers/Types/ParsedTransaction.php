@@ -74,13 +74,17 @@ class ParsedTransaction
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
             ->setSignatures($data['signatures'])
-            ->setMessage(ParsedMessage::fromArray($data['message']));
+            ->setMessage(ParsedMessage::from($data['message']));
     }
 }

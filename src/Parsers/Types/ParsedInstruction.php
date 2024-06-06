@@ -9,9 +9,9 @@ use MultipleChain\SolanaSDK\PublicKey;
 class ParsedInstruction
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $program;
+    private ?string $program;
 
     /**
      * @var array<string>
@@ -41,9 +41,9 @@ class ParsedInstruction
     /**
      * Get the value of program
      *
-     * @return string
+     * @return string|null
      */
-    public function getProgram(): string
+    public function getProgram(): ?string
     {
         return $this->program;
     }
@@ -51,11 +51,11 @@ class ParsedInstruction
     /**
      * Set the value of program
      *
-     * @param string $program
+     * @param string|null $program
      *
      * @return self
      */
-    public function setProgram(string $program): self
+    public function setProgram(?string $program): self
     {
         $this->program = $program;
         return $this;
@@ -192,17 +192,27 @@ class ParsedInstruction
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
+        $programId = $data['programId'];
+
         return (new self())
-            ->setData($data['data'])
-            ->setParsed($data['parsed'])
-            ->setProgram($data['program'])
             ->setAccounts($data['accounts'])
-            ->setStackHeight($data['stackHeight'])
-            ->setProgramId(new PublicKey($data['programId']));
+            ->setData($data['data'] ?? null)
+            ->setParsed($data['parsed'] ?? null)
+            ->setProgram($data['program'] ?? null)
+            ->setStackHeight($data['stackHeight'] ?? null)
+            ->setProgramId(
+                $programId instanceof PublicKey
+                    ? $programId
+                    : new PublicKey($programId)
+            );
     }
 }

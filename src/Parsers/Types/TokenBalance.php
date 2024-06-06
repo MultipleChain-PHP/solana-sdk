@@ -22,6 +22,11 @@ class TokenBalance
     private ?string $owner;
 
     /**
+     * @var string|null
+     */
+    private ?string $programId;
+
+    /**
      * @var TokenAmount
      */
     private TokenAmount $uiTokenAmount;
@@ -96,6 +101,29 @@ class TokenBalance
     }
 
     /**
+     * Get the value of programId
+     *
+     * @return string|null
+     */
+    public function getProgramId(): ?string
+    {
+        return $this->programId;
+    }
+
+    /**
+     * Set the value of programId
+     *
+     * @param string|null $programId
+     *
+     * @return self
+     */
+    public function setProgramId(?string $programId): self
+    {
+        $this->programId = $programId;
+        return $this;
+    }
+
+    /**
      * Get the value of uiTokenAmount
      *
      * @return TokenAmount
@@ -126,21 +154,27 @@ class TokenBalance
         return [
             'mint' => $this->mint,
             'owner' => $this->owner,
+            'programId' => $this->programId,
             'accountIndex' => $this->accountIndex,
             'uiTokenAmount' => $this->uiTokenAmount->toArray(),
         ];
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
             ->setMint($data['mint'])
-            ->setOwner($data['owner'])
+            ->setOwner($data['owner'] ?? null)
             ->setAccountIndex($data['accountIndex'])
-            ->setUiTokenAmount(TokenAmount::fromArray($data['uiTokenAmount']));
+            ->setProgramId($data['programId'] ?? null)
+            ->setUiTokenAmount(TokenAmount::from($data['uiTokenAmount']));
     }
 }

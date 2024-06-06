@@ -57,6 +57,16 @@ class ParsedTransactionMeta
     private ?int $computeUnitsConsumed;
 
     /**
+     * @var array<mixed>|null
+     */
+    private ?array $rewards;
+
+    /**
+     * @var array<mixed>|null
+     */
+    private ?array $status;
+
+    /**
      * Get the value of fee
      *
      * @return int
@@ -278,6 +288,46 @@ class ParsedTransactionMeta
     }
 
     /**
+     * Get the value of rewards
+     * @return array<mixed>|null
+     */
+    public function getRewards(): ?array
+    {
+        return $this->rewards;
+    }
+
+    /**
+     * Set the value of rewards
+     * @param array<mixed>|null $rewards
+     * @return self
+     */
+    public function setRewards(?array $rewards): self
+    {
+        $this->rewards = $rewards;
+        return $this;
+    }
+
+    /**
+     * Get the value of status
+     * @return array<mixed>|null
+     */
+    public function getStatus(): ?array
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of status
+     * @param array<mixed>|null $status
+     * @return self
+     */
+    public function setStatus(?array $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
      * @return array<mixed>
      */
     public function toArray(): array
@@ -285,6 +335,8 @@ class ParsedTransactionMeta
         return [
             'fee' => $this->fee,
             'err' => $this->err,
+            'status' => $this->status,
+            'rewards' => $this->rewards,
             'logMessages' => $this->logMessages,
             'preBalances' => $this->preBalances,
             'postBalances' => $this->postBalances,
@@ -306,29 +358,42 @@ class ParsedTransactionMeta
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
             ->setFee($data['fee'])
-            ->setErr($data['err'])
-            ->setLogMessages($data['logMessages'])
+            ->setErr($data['err'] ?? null)
+            ->setStatus($data['status'] ?? null)
+            ->setRewards($data['rewards'] ?? null)
             ->setPreBalances($data['preBalances'])
             ->setPostBalances($data['postBalances'])
-            ->setComputeUnitsConsumed($data['computeUnitsConsumed'])
+            ->setLogMessages($data['logMessages'] ?? null)
+            ->setComputeUnitsConsumed($data['computeUnitsConsumed'] ?? null)
             ->setPreTokenBalances($data['preTokenBalances'] ? array_map(
-                fn (array $tokenBalance) => TokenBalance::fromArray($tokenBalance),
+                fn (array|TokenBalance $tokenBalance) => TokenBalance::from($tokenBalance),
                 $data['preTokenBalances']
             ) : null)
             ->setPostTokenBalances($data['postTokenBalances'] ? array_map(
-                fn (array $tokenBalance) => TokenBalance::fromArray($tokenBalance),
+                fn (array|TokenBalance $tokenBalance) => TokenBalance::from($tokenBalance),
                 $data['postTokenBalances']
             ) : null)
-            ->setLoadedAddresses($data['loadedAddresses'] ? LoadedAddresses::fromArray($data['loadedAddresses']) : null)
+            ->setLoadedAddresses(
+                $data['loadedAddresses']
+                    ? ($data['loadedAddresses'] instanceof LoadedAddresses
+                        ? $data['loadedAddresses']
+                        : LoadedAddresses::from($data['loadedAddresses']))
+                    : null
+            )
             ->setInnerInstructions($data['innerInstructions'] ? array_map(
-                fn (array $addressTableLookup) => ParsedInnerInstruction::fromArray($addressTableLookup),
+                fn (array|ParsedInnerInstruction $addressTableLookup)
+                => ParsedInnerInstruction::from($addressTableLookup),
                 $data['innerInstructions']
             ) : null);
     }

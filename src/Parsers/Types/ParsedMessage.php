@@ -139,24 +139,29 @@ class ParsedMessage
     }
 
     /**
-     * @param array<mixed> $array
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $array): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
             ->setAccountKeys(array_map(
-                fn (array $account) => ParsedMessageAccount::fromArray($account),
-                $array['accountKeys']
+                fn (array|ParsedMessageAccount $account) => ParsedMessageAccount::from($account),
+                $data['accountKeys']
             ))
             ->setInstructions(array_map(
-                fn (array $instruction) => ParsedInstruction::fromArray($instruction),
-                $array['instructions']
+                fn (array|ParsedInstruction $instruction) => ParsedInstruction::from($instruction),
+                $data['instructions']
             ))
-            ->setRecentBlockhash($array['recentBlockhash'])
-            ->setAddressTableLookups($array['addressTableLookups'] ? array_map(
-                fn (array $addressTableLookup) => ParsedAddressTableLookup::fromArray($addressTableLookup),
-                $array['addressTableLookups']
+            ->setRecentBlockhash($data['recentBlockhash'])
+            ->setAddressTableLookups($data['addressTableLookups'] ? array_map(
+                fn (array|ParsedAddressTableLookup $addressTableLookup)
+                => ParsedAddressTableLookup::from($addressTableLookup),
+                $data['addressTableLookups']
             ) : null);
     }
 }

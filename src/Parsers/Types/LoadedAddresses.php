@@ -14,7 +14,7 @@ class LoadedAddresses
     /**
      * @var array<string>
      */
-    private array $readable;
+    private array $readonly;
 
     /**
      * Get the value of writable
@@ -40,25 +40,25 @@ class LoadedAddresses
     }
 
     /**
-     * Get the value of readable
+     * Get the value of readonly
      *
      * @return array<string>
      */
-    public function getReadable(): array
+    public function getReadonly(): array
     {
-        return $this->readable;
+        return $this->readonly;
     }
 
     /**
-     * Set the value of readable
+     * Set the value of readonly
      *
-     * @param array<string> $readable
+     * @param array<string> $readonly
      *
      * @return self
      */
-    public function setReadable(array $readable): self
+    public function setReadonly(array $readonly): self
     {
-        $this->readable = $readable;
+        $this->readonly = $readonly;
         return $this;
     }
 
@@ -69,18 +69,21 @@ class LoadedAddresses
     {
         return [
             'writable' => $this->writable,
-            'readable' => $this->readable,
+            'readonly' => $this->readonly,
         ];
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
         return (new self())
             ->setWritable($data['writable'])
-            ->setReadable($data['readable']);
+            ->setReadonly($data['readonly']);
     }
 }

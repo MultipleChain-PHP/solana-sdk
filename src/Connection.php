@@ -9,6 +9,7 @@ use Illuminate\Http\Client\Response;
 use MultipleChain\SolanaSDK\Util\Signer;
 use MultipleChain\SolanaSDK\Util\Commitment;
 use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
+use MultipleChain\SolanaSDK\Parsers\Types\ParsedTransactionWithMeta;
 
 class Connection extends Program
 {
@@ -117,10 +118,12 @@ class Connection extends Program
     /**
      * @param string $transactionSignature
      * @param Commitment|null $commitment
-     * @return array<mixed>|null
+     * @return ParsedTransactionWithMeta|null
      */
-    public function getParsedTransaction(string $transactionSignature, ?Commitment $commitment = null): ?array
-    {
+    public function getParsedTransaction(
+        string $transactionSignature,
+        ?Commitment $commitment = null
+    ): ?ParsedTransactionWithMeta {
         $result = $this->getTransaction($transactionSignature, $commitment);
 
         if (!$result) {

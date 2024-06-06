@@ -77,16 +77,20 @@ class ParsedInnerInstruction
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
             ->setIndex($data['index'])
             ->setInstructions(
                 array_map(
-                    fn (array $instruction) => ParsedInstruction::fromArray($instruction),
+                    fn (array|ParsedInstruction $instruction) => ParsedInstruction::from($instruction),
                     $data['instructions']
                 )
             );

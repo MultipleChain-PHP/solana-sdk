@@ -134,15 +134,23 @@ class ParsedMessageAccount
     }
 
     /**
-     * @param array<mixed> $array
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $array): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
+
         return (new self())
-            ->setSource($array['source'])
-            ->setSigner($array['signer'])
-            ->setWritable($array['writable'])
-            ->setPubkey(new PublicKey($array['pubkey']));
+            ->setSigner($data['signer'])
+            ->setWritable($data['writable'])
+            ->setSource($data['source'] ?? null)
+            ->setPubkey(
+                $data['pubkey'] instanceof PublicKey
+                    ? $data['pubkey']
+                    : new PublicKey($data['pubkey'])
+            );
     }
 }

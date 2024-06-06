@@ -103,11 +103,14 @@ class ParsedAddressTableLookup
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed>|self $data
      * @return self
      */
-    public static function fromArray(array $data): self
+    public static function from(array|self $data): self
     {
+        if ($data instanceof self) {
+            return $data;
+        }
         return (new self())
             ->setAccountKey($data['accountKey'])
             ->setWritableIndexes($data['writableIndexes'])
