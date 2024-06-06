@@ -28,11 +28,21 @@ class SplTokenProgramTest extends TestCase
 
     private Connection $connection;
 
+    private PublicKey $senderPublicKey;
+
+    private PublicKey $receiverPublicKey;
+
+    private PublicKey $mintPublicKey;
+
     /**
      * @return void
      */
     public function setUp(): void
     {
+        $this->senderPublicKey = new PublicKey($this->walletAddress);
+        $this->receiverPublicKey = new PublicKey($this->receiver);
+        $this->mintPublicKey = new PublicKey($this->splTokenAddress);
+
         $this->keypair = Keypair::fromPrivateKey(
             "44gurmbgSzfMZfqhmaUj1nuvbLMCbMyo3shHvJSesAAfLLTzU9p2aB6Jue7XF2ViBirSzbeUMTYVjRmEj5jW4puu"
         );
@@ -57,19 +67,18 @@ class SplTokenProgramTest extends TestCase
      */
     public function testTokenAccountInstruction(): void
     {
-        $sender = new PublicKey($this->walletAddress);
-        $receiver = new PublicKey($this->receiver);
-        $mint = new PublicKey($this->splTokenAddress);
-
-        $receiverTokenAccount = SplTokenProgram::getAssociatedTokenAddress($mint, $receiver);
+        $receiverTokenAccount = SplTokenProgram::getAssociatedTokenAddress(
+            $this->mintPublicKey,
+            $this->receiverPublicKey
+        );
 
         $this->assertEquals('C1JA7q94cBAK97UzSqYVxXebnqPCkY4ZXeEFDTXTuEb7', $receiverTokenAccount->toString());
 
         $instruction = SplTokenProgram::createAssociatedTokenAccountInstruction(
-            $sender,
+            $this->senderPublicKey,
             $receiverTokenAccount,
-            $receiver,
-            $mint
+            $this->receiverPublicKey,
+            $this->mintPublicKey
         );
 
         $this->assertEquals([
@@ -118,5 +127,50 @@ class SplTokenProgramTest extends TestCase
             'programId' => 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
             'data' => ''
         ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testTransferInstruction(): void
+    {
+        $senderTokenAccount = SplTokenProgram::getAssociatedTokenAddress(
+            $this->mintPublicKey,
+            $this->senderPublicKey
+        );
+
+        $receiverTokenAccount = SplTokenProgram::getAssociatedTokenAddress(
+            $this->mintPublicKey,
+            $this->receiverPublicKey
+        );
+
+        $instruction = SplTokenProgram::createTransferInstruction(
+            $senderTokenAccount,
+            $receiverTokenAccount,
+            $this->senderPublicKey,
+            100000000000
+        );
+
+        $this->assertEquals('AwDodkgXAAAA', $instruction->data->toBase64String());
+    }
+
+    /**
+     * @return void
+     */
+    public function testApproveInstruction(): void
+    {
+        $senderTokenAccount = SplTokenProgram::getAssociatedTokenAddress(
+            $this->mintPublicKey,
+            $this->senderPublicKey
+        );
+
+        $instruction = SplTokenProgram::createApproveInstruction(
+            $senderTokenAccount,
+            $this->receiverPublicKey,
+            $this->senderPublicKey,
+            1000000
+        );
+
+        $this->assertEquals('BEBCDwAAAAAA', $instruction->data->toBase64String());
     }
 }

@@ -135,7 +135,7 @@ class SplTokenProgram extends Program
             $associatedToken,
             $owner,
             $mint,
-            new Buffer(),
+            Buffer::alloc(0),
             $programId,
             $associatedTokenProgramId
         );
@@ -190,17 +190,14 @@ class SplTokenProgram extends Program
 
         $keys = self::addSigners($keys, $owner, $multiSigners);
 
-        $data = [
-            // uint32 @phpstan-ignore-next-line
-            ...unpack("C*", pack("V", self::TRANSFER)),
-            // int64 @phpstan-ignore-next-line
-            ...unpack("C*", pack("P", $amount)),
-        ];
+        $data = (new Buffer())
+            ->push(pack('C', self::TRANSFER))
+            ->push(pack('P', $amount));
 
         return new TransactionInstruction(
             $programId,
             $keys,
-            $data
+            $data->getData()
         );
     }
 
@@ -230,17 +227,14 @@ class SplTokenProgram extends Program
 
         $keys = self::addSigners($keys, $owner, $multiSigners);
 
-        $data = [
-            // uint32 @phpstan-ignore-next-line
-            ...unpack("C*", pack("V", self::APPROVE)),
-            // int64 @phpstan-ignore-next-line
-            ...unpack("C*", pack("P", $amount)),
-        ];
+        $data = (new Buffer())
+            ->push(pack('C', self::APPROVE))
+            ->push(pack('P', $amount));
 
         return new TransactionInstruction(
             $programId,
             $keys,
-            $data
+            $data->getData()
         );
     }
 }
