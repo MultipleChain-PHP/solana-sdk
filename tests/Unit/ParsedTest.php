@@ -7,10 +7,7 @@ namespace MultipleChain\SolanaSDK\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use MultipleChain\SolanaSDK\PublicKey;
 use MultipleChain\SolanaSDK\Connection;
-use MultipleChain\SolanaSDK\Transaction;
 use MultipleChain\SolanaSDK\SolanaRpcClient;
-use MultipleChain\SolanaSDK\Util\Commitment;
-use MultipleChain\SolanaSDK\Programs\SystemProgram;
 
 class ParsedTest extends TestCase
 {
