@@ -28,7 +28,9 @@ class ParsedTest extends TestCase
     private string $nftTransferTx
         = "3vrCoNVmeNgGG4LB1qvvdx21TYm6dnPBmhFqXChsusuLn5ZEjFZNFG3BwQQ8fodBYiPXG8QokdBLWjRtxgi7tnRD";
 
-    private string $tokenSplAddress = '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx';
+    private string $splTokenAddress = '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx';
+
+    private string $walletAddress = 'gEbjuPsW9xwKpUdQ69khDP3kNEw17HTSmLCMu1S9Msm';
 
     /**
      * @return void
@@ -380,7 +382,7 @@ class ParsedTest extends TestCase
      */
     public function testSplTokenAccountInfo(): void
     {
-        $result = $this->connection->getParsedAccountInfo($this->tokenSplAddress);
+        $result = $this->connection->getParsedAccountInfo($this->splTokenAddress);
 
         $this->assertEquals($result->toArray()['data'], [
             'parsed' => [
@@ -395,6 +397,46 @@ class ParsedTest extends TestCase
             ],
             'program' => 'spl-token',
             'space' => 82
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testParsedTokenAccountsByOwner(): void
+    {
+        $result = $this->connection->getParsedTokenAccountsByOwner($this->walletAddress, [
+            'mint' => $this->splTokenAddress
+        ]);
+
+        $this->assertEquals($result[0]->toArray(), [
+            'pubkey' => 'F723Hbpe6vNYiBY5rwXpq7e1P2hcH9en1tET6QHji2TZ',
+            'account' => [
+                'executable' => false,
+                'lamports' => 2039280,
+                'rentEpoch' => 18446744073709552000,
+                'space' => 165,
+                'owner' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+                'data' => [
+                    'parsed' => [
+                        'info' => [
+                            'isNative' => false,
+                            'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
+                            'owner' => 'gEbjuPsW9xwKpUdQ69khDP3kNEw17HTSmLCMu1S9Msm',
+                            'state' => 'initialized',
+                            'tokenAmount' => [
+                                'amount' => '19000000000',
+                                'decimals' => 8,
+                                'uiAmount' => 190,
+                                'uiAmountString' => '190'
+                            ]
+                        ],
+                        'type' => 'account'
+                    ],
+                    'program' => 'spl-token',
+                    'space' => 165
+                ]
+            ]
         ]);
     }
 }

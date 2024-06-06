@@ -12,17 +12,17 @@ class ParsedAccountInfo
     /**
      * @var bool
      */
-    public bool $executable;
+    private bool $executable;
 
     /**
      * @var PublicKey
      */
-    public PublicKey $owner;
+    private PublicKey $owner;
 
     /**
      * @var int
      */
-    public int $lamports;
+    private int $lamports;
 
     /**
      * @var ParsedAccountData|Buffer
@@ -32,8 +32,12 @@ class ParsedAccountInfo
     /**
      * @var float|null
      */
-    public ?float $rentEpoch;
+    private ?float $rentEpoch;
 
+    /**
+     * @var int|null
+     */
+    private ?int $space;
 
     /**
      * Get the value of executable
@@ -151,11 +155,35 @@ class ParsedAccountInfo
     }
 
     /**
+     * Get the value of space
+     *
+     * @return int|null
+     */
+    public function getSpace(): ?int
+    {
+        return $this->space;
+    }
+
+    /**
+     * Set the value of space
+     *
+     * @param int|null $space
+     *
+     * @return self
+     */
+    public function setSpace(?int $space): self
+    {
+        $this->space = $space;
+        return $this;
+    }
+
+    /**
      * @return array<mixed>
      */
     public function toArray(): array
     {
         return [
+            'space' => $this->space,
             'lamports' => $this->lamports,
             'rentEpoch' => $this->rentEpoch,
             'executable' => $this->executable,
@@ -176,8 +204,9 @@ class ParsedAccountInfo
 
         return (new ParsedAccountInfo())
             ->setLamports($data['lamports'])
-            ->setRentEpoch($data['rentEpoch'])
+            ->setSpace($data['space'] ?? null)
             ->setExecutable($data['executable'])
+            ->setRentEpoch($data['rentEpoch'] ?? null)
             ->setOwner(
                 $data['owner'] instanceof PublicKey ? $data['owner'] : new PublicKey($data['owner'])
             )

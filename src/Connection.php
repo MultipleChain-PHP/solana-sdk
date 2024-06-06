@@ -8,6 +8,7 @@ use Illuminate\Http\Client\Response;
 use MultipleChain\SolanaSDK\Util\Signer;
 use MultipleChain\SolanaSDK\Util\Commitment;
 use MultipleChain\SolanaSDK\Types\ParsedAccountInfo;
+use MultipleChain\SolanaSDK\Types\ParsedTokenAccount;
 use MultipleChain\SolanaSDK\Types\ParsedTransactionWithMeta;
 use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
 
@@ -27,10 +28,9 @@ class Connection extends Program
      */
     public function getLatestBlockhash(?Commitment $commitment = null): array
     {
-        $object = [
+        return (array) $this->client->call('getLatestBlockhash', [[
             "commitment" => $this->getCommitmentString($commitment),
-        ];
-        return (array) $this->client->call('getLatestBlockhash', [$object])['value'];
+        ]])['value'];
     }
 
     /**
@@ -40,10 +40,9 @@ class Connection extends Program
      */
     public function isBlockhashValid(string $blockhash, ?Commitment $commitment = null): bool
     {
-        $object = [
+        return (bool) $this->client->call('isBlockhashValid', [$blockhash, [
             "commitment" => $this->getCommitmentString($commitment),
-        ];
-        return (bool) $this->client->call('isBlockhashValid', [$blockhash, $object])['value'];
+        ]])['value'];
     }
 
     /**
@@ -101,12 +100,10 @@ class Connection extends Program
      */
     public function getTransaction(string $transactionSignature, ?Commitment $commitment = null): ?array
     {
-        $config = [
+        return $this->client->call('getTransaction', [$transactionSignature, [
             "maxSupportedTransactionVersion" => 0,
             "commitment" => $this->getCommitmentString($commitment),
-        ];
-
-        return $this->client->call('getTransaction', [$transactionSignature, $config]);
+        ]]);
     }
 
     /**
@@ -155,6 +152,30 @@ class Connection extends Program
         }
 
         return ParsedAccountInfo::from($accountResponse);
+    }
+
+    /**
+     * @param string $pubKey
+     * @param array<mixed> $params
+     * @param Commitment|null $commitment
+     * @return array<ParsedTokenAccount>
+     */
+    public function getParsedTokenAccountsByOwner(
+        string $pubKey,
+        array $params = [],
+        ?Commitment $commitment = null
+    ): array {
+        $result = $this->client->call('getTokenAccountsByOwner', [$pubKey, $params, [
+            "encoding" => "jsonParsed",
+            "commitment" => $this->getCommitmentString($commitment),
+        ]]);
+
+        $accounts = [];
+        foreach ($result['value'] as $account) {
+            $accounts[] = ParsedTokenAccount::from($account);
+        }
+
+        return $accounts;
     }
 
     /**
