@@ -131,6 +131,19 @@ class Buffer implements Countable
     }
 
     /**
+     * Compare this Buffer with another Buffer to check for equality.
+     *
+     * @param Buffer $other
+     * @return bool
+     */
+    public function equals(Buffer $other): bool
+    {
+        return $this->datatype === $other->datatype &&
+            $this->signed === $other->signed &&
+            $this->data === $other->data;
+    }
+
+    /**
      * @param int $len
      * @param int $val
      * @return $this

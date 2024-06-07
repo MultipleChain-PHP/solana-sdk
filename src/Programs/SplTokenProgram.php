@@ -10,10 +10,11 @@ use MultipleChain\SolanaSDK\PublicKey;
 use MultipleChain\SolanaSDK\Connection;
 use MultipleChain\SolanaSDK\Util\Signer;
 use MultipleChain\SolanaSDK\Util\Buffer;
+use MultipleChain\SolanaSDK\Util\Commitment;
 use MultipleChain\SolanaSDK\Util\AccountMeta;
-use MultipleChain\SolanaSDK\TokenInstruction;
-use MultipleChain\SolanaSDK\Programs\SystemProgram;
 use MultipleChain\SolanaSDK\TransactionInstruction;
+use MultipleChain\SolanaSDK\Programs\SystemProgram;
+use MultipleChain\SolanaSDK\Programs\MetaplexProgram;
 
 class SplTokenProgram extends Program
 {
@@ -45,33 +46,105 @@ class SplTokenProgram extends Program
     /**
      * @param Connection $connection
      * @param PublicKey $address
+     * @param PublicKey $programId
      * @param Commitment|null $commitment
-     * @param PublicKey|null $programId
      * @return array<mixed>|null
      */
     public static function getTokenMetadata(
         Connection $connection,
         PublicKey $address,
-        ?Commitment $commitment = null,
-        ?PublicKey $programId = null
+        PublicKey $programId,
+        ?Commitment $commitment = null
     ): ?array {
-        $programId = $programId ?? new PublicKey(self::SOLANA_TOKEN_PROGRAM_2022);
-        $info = $connection->getParsedAccountInfo($address->toString(), $commitment);
-        $parsedInfo = $info->getData()->getParsed()['info'];
-        $tokenMetadata = array_reduce($parsedInfo['extensions'], function ($carry, $item) {
-            if ('tokenMetadata' === $item['extension']) {
-                $carry = $item['state'];
-            }
-            return $carry;
-        });
+        if ($programId->equalsBase58(self::SOLANA_TOKEN_PROGRAM)) {
+            return self::getOldTokenMetadata($connection, $address, $commitment);
+        } else {
+            return self::getToken2022Metadata($connection, $address, $commitment);
+        }
+    }
 
-        if (null === $tokenMetadata) {
+    /**
+     * @param Connection $connection
+     * @param PublicKey $address
+     * @param Commitment|null $commitment
+     * @return array<mixed>|null
+     */
+    private static function getOldTokenMetadata(
+        Connection $connection,
+        PublicKey $address,
+        ?Commitment $commitment = null
+    ): ?array {
+        try {
+            $metadataAccount = MetaplexProgram::findMetadataAccount($address);
+            $tokenInfo = $connection->getParsedAccountInfo($address->toString(), $commitment);
+            $metaDataInfo = $connection->getParsedAccountInfo($metadataAccount->toString(), $commitment);
+
+            if (null === $metaDataInfo || null === $tokenInfo) {
+                return null;
+            }
+
+            $parsedInfo = $tokenInfo->getData()->getParsed()['info'];
+            $unpacked = MetaplexProgram::unpackMetadata($metaDataInfo->getData()->getData()[0]);
+
+            return [
+                'mint' => $unpacked['mint'],
+                'uri' => $unpacked['data']['uri'],
+                'name' => $unpacked['data']['name'],
+                'decimals' => $parsedInfo['decimals'],
+                'symbol' => $unpacked['data']['symbol'],
+                'updateAuthority' => $unpacked['updateAuthority'],
+                'additionalMetadata' => [
+                    'share' => $unpacked['data']['share'],
+                    'creators' => $unpacked['data']['creators'],
+                    'verified' => $unpacked['data']['verified'],
+                    'sellerFeeBasisPoints' => $unpacked['data']['sellerFeeBasisPoints'],
+                ],
+            ];
+        } catch (\Throwable $th) {
             return null;
         }
+    }
 
-        return array_merge($tokenMetadata, [
-            'decimals' => $parsedInfo['decimals'],
-        ]);
+    /**
+     * @param Connection $connection
+     * @param PublicKey $address
+     * @param Commitment|null $commitment
+     * @return array<mixed>|null
+     */
+    public static function getToken2022Metadata(
+        Connection $connection,
+        PublicKey $address,
+        ?Commitment $commitment = null
+    ): ?array {
+        try {
+            $info = $connection->getParsedAccountInfo($address->toString(), $commitment);
+
+            if (null === $info) {
+                return null;
+            }
+
+            if ('spl-token-2022' !== $info->getData()->getProgram()) {
+                return null;
+            }
+
+            $parsedInfo = $info->getData()->getParsed()['info'];
+            $tokenMetadata = array_reduce($parsedInfo['extensions'], function ($carry, $item) {
+                if ('tokenMetadata' === $item['extension']) {
+                    $carry = $item['state'];
+                }
+                return $carry;
+            });
+
+            if (null === $tokenMetadata) {
+                return null;
+            }
+
+            return array_merge($tokenMetadata, [
+                'decimals' => $parsedInfo['decimals'],
+            ]);
+        } catch (\Throwable $th) {
+            return null;
+        }
     }
 
     /**
@@ -96,7 +169,7 @@ class SplTokenProgram extends Program
         $programId = $programId ?? new PublicKey(self::SOLANA_TOKEN_PROGRAM);
         $associatedTokenProgramId = $associatedTokenProgramId ?? new PublicKey(self::ASSOCIATED_TOKEN_PROGRAM_ID);
 
-        list($address, ) = PublicKey::findProgramAddress(
+        list($address,) = PublicKey::findProgramAddress(
             [
                 $owner->toBuffer(),
                 $programId->toBuffer(),

@@ -73,7 +73,17 @@ class PublicKey implements HasPublicKey
      */
     public function equals(PublicKey $publicKey): bool
     {
-        return $publicKey->buffer === $this->buffer;
+        return $publicKey->buffer->equals($this->buffer);
+    }
+
+    /**
+     * Check if a base-58 encoded public key string is equal to this public key
+     * @param string $base58String
+     * @return bool
+     */
+    public function equalsBase58(string $base58String): bool
+    {
+        return strtolower($this->toBase58()) === strtolower($base58String);
     }
 
     /**
@@ -155,7 +165,7 @@ class PublicKey implements HasPublicKey
     /**
      * Derive a program address from seeds and a program ID.
      *
-     * @param array<Buffer> $seeds
+     * @param array<Buffer|string|int|array<int>> $seeds
      * @param PublicKey $programId
      * @return PublicKey
      */
@@ -183,7 +193,7 @@ class PublicKey implements HasPublicKey
     }
 
     /**
-     * @param array<Buffer> $seeds
+     * @param array<Buffer|string> $seeds
      * @param PublicKey $programId
      * @return array<mixed> 2 elements, [0] = PublicKey, [1] = integer
      */

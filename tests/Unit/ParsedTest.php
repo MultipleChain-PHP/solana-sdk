@@ -7,6 +7,7 @@ namespace MultipleChain\SolanaSDK\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use MultipleChain\SolanaSDK\Connection;
 use MultipleChain\SolanaSDK\SolanaRpcClient;
+use MultipleChain\SolanaSDK\Types\ParsedTokenAccount;
 
 class ParsedTest extends TestCase
 {
@@ -389,7 +390,7 @@ class ParsedTest extends TestCase
     {
         $result = $this->connection->getParsedAccountInfo($this->splTokenAddress);
 
-        $this->assertEquals($result->toArray()['data'], [
+        $this->assertEquals($result->getData()->toArray()['data'], [
             'parsed' => [
                 'info' => [
                     'decimals' => 8,
@@ -410,11 +411,14 @@ class ParsedTest extends TestCase
      */
     public function testParsedTokenAccountsByOwner(): void
     {
+        /**
+         * @var array<ParsedTokenAccount> $result
+         */
         $result = $this->connection->getParsedTokenAccountsByOwner($this->walletAddress, [
             'mint' => $this->splTokenAddress
         ]);
 
-        $info = $result[0]->toArray()['account']['data']['parsed']['info'];
+        $info = $result[0]->getAccount()->getData()->getData()['parsed']['info'];
 
         $this->assertEquals(
             [

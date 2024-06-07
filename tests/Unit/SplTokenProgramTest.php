@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use MultipleChain\SolanaSDK\Keypair;
 use MultipleChain\SolanaSDK\PublicKey;
 use MultipleChain\SolanaSDK\Connection;
+use MultipleChain\SolanaSDK\Util\Buffer;
 use MultipleChain\SolanaSDK\SolanaRpcClient;
 use MultipleChain\SolanaSDK\Util\AccountMeta;
 use MultipleChain\SolanaSDK\Programs\SplTokenProgram;
@@ -177,11 +178,42 @@ class SplTokenProgramTest extends TestCase
     /**
      * @return void
      */
+    public function testSplTokenMetadata(): void
+    {
+        $metadata = SplTokenProgram::getTokenMetadata(
+            $this->connection,
+            new PublicKey($this->splTokenAddress),
+            new PublicKey(SplTokenProgram::SOLANA_TOKEN_PROGRAM)
+        );
+
+        $this->assertEquals($metadata, [
+            'updateAuthority' => 'HH3K7b4RoemS7wFDZmqEBNeUkxrkZvS4n7waSuSqafzi',
+            'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
+            'name' => 'Example',
+            'symbol' => 'EXM',
+            // @phpcs:ignore
+            'uri' => 'https://gist.githubusercontent.com/BeycanDeveloper/4f9eccbcef78701530dec4e0fc0b0f94/raw/4aaa2a6c7b016144a9eeb4d12d9f25c4be06b7c5/example-spl-token.json',
+            'additionalMetadata' => [
+                'share' => [100],
+                'verified' => [1],
+                'sellerFeeBasisPoints' => 0,
+                'creators' => [
+                    'HH3K7b4RoemS7wFDZmqEBNeUkxrkZvS4n7waSuSqafzi',
+                ],
+            ],
+            'decimals' => 8
+        ]);
+    }
+
+    /**
+     * @return void
+     */
     public function testSplToken2022Metadata(): void
     {
         $metadata = SplTokenProgram::getTokenMetadata(
             $this->connection,
             new PublicKey($this->token2022),
+            new PublicKey(SplTokenProgram::SOLANA_TOKEN_PROGRAM_2022)
         );
 
         $this->assertEquals($metadata, [

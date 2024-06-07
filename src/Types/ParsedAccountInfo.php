@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MultipleChain\SolanaSDK\Types;
 
 use MultipleChain\SolanaSDK\PublicKey;
-use MultipleChain\SolanaSDK\Util\Buffer;
 
 class ParsedAccountInfo
 {
@@ -25,9 +24,9 @@ class ParsedAccountInfo
     private int $lamports;
 
     /**
-     * @var ParsedAccountData|Buffer
+     * @var ParsedAccountData
      */
-    public ParsedAccountData|Buffer $data;
+    public ParsedAccountData $data;
 
     /**
      * @var float|null
@@ -111,9 +110,9 @@ class ParsedAccountInfo
     /**
      * Get the value of data
      *
-     * @return ParsedAccountData|Buffer
+     * @return ParsedAccountData
      */
-    public function getData(): ParsedAccountData|Buffer
+    public function getData(): ParsedAccountData
     {
         return $this->data;
     }
@@ -121,11 +120,11 @@ class ParsedAccountInfo
     /**
      * Set the value of data
      *
-     * @param ParsedAccountData|Buffer $data
+     * @param ParsedAccountData $data
      *
      * @return self
      */
-    public function setData(ParsedAccountData|Buffer $data): self
+    public function setData(ParsedAccountData $data): self
     {
         $this->data = $data;
         return $this;
@@ -188,7 +187,7 @@ class ParsedAccountInfo
             'rentEpoch' => $this->rentEpoch,
             'executable' => $this->executable,
             'owner' => $this->owner->toString(),
-            'data' => $this->data instanceof ParsedAccountData ? $this->data->toArray() : $this->data->toString(),
+            'data' => $this->data->toArray()
         ];
     }
 
@@ -207,11 +206,9 @@ class ParsedAccountInfo
             ->setSpace($data['space'] ?? null)
             ->setExecutable($data['executable'])
             ->setRentEpoch($data['rentEpoch'] ?? null)
+            ->setData(ParsedAccountData::from($data['data'] ?? []))
             ->setOwner(
                 $data['owner'] instanceof PublicKey ? $data['owner'] : new PublicKey($data['owner'])
-            )
-            ->setData(
-                is_array($data['data']) ? ParsedAccountData::from($data['data']) : Buffer::fromBase58($data['data'])
             );
     }
 }

@@ -7,46 +7,36 @@ namespace MultipleChain\SolanaSDK\Types;
 class ParsedAccountData
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $program;
+    private ?string $program;
+
+    /**
+     * @var int|null
+     */
+    private ?int $space;
 
     /**
      * @var mixed
      */
-    private mixed $parsed;
+    private mixed $data;
 
     /**
-     * @var int
-     */
-    private int $space;
-
-    /**
-     * @param string $program
+     * @param string|null $program
      * @return self
      */
-    public function setProgram(string $program): self
+    public function setProgram(?string $program): self
     {
         $this->program = $program;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getProgram(): string
+    public function getProgram(): ?string
     {
         return $this->program;
-    }
-
-    /**
-     * @param mixed $parsed
-     * @return self
-     */
-    public function setParsed(mixed $parsed): self
-    {
-        $this->parsed = $parsed;
-        return $this;
     }
 
     /**
@@ -54,25 +44,43 @@ class ParsedAccountData
      */
     public function getParsed(): mixed
     {
-        return $this->parsed;
+        return is_array($this->data) ? ($this->data['parsed'] ?? null) : null;
     }
 
     /**
-     * @param int $space
+     * @param int|null $space
      * @return self
      */
-    public function setSpace(int $space): self
+    public function setSpace(?int $space): self
     {
         $this->space = $space;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSpace(): int
+    public function getSpace(): ?int
     {
         return $this->space;
+    }
+
+    /**
+     * @param mixed $data
+     * @return self
+     */
+    public function setData(mixed $data): self
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData(): mixed
+    {
+        return $this->data;
     }
 
     /**
@@ -82,8 +90,8 @@ class ParsedAccountData
     {
         return [
             'program' => $this->program,
-            'parsed' => $this->parsed,
             'space' => $this->space,
+            'data' => $this->data,
         ];
     }
 
@@ -98,8 +106,8 @@ class ParsedAccountData
         }
 
         return (new ParsedAccountData())
-            ->setProgram($data['program'])
-            ->setParsed($data['parsed'])
-            ->setSpace($data['space']);
+            ->setProgram($data['program'] ?? null)
+            ->setSpace($data['space'] ?? null)
+            ->setData($data);
     }
 }
