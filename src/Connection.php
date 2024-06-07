@@ -58,11 +58,14 @@ class Connection extends Program
 
     /**
      * @param string $pubKey
+     * @param Commitment|null $commitment
      * @return array<mixed>|null
      */
-    public function getAccountInfo(string $pubKey): ?array
+    public function getAccountInfo(string $pubKey, ?Commitment $commitment = null): ?array
     {
-        $accountResponse = $this->client->call('getAccountInfo', [$pubKey])['value'];
+        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, [
+            "commitment" => $this->getCommitmentString($commitment),
+        ]])['value'];
 
         if (!$accountResponse) {
             return null;
@@ -212,11 +215,15 @@ class Connection extends Program
 
     /**
      * @param string $pubKey
+     * @param Commitment|null $commitment
      * @return ParsedAccountInfo
      */
-    public function getParsedAccountInfo(string $pubKey): ?ParsedAccountInfo
+    public function getParsedAccountInfo(string $pubKey, ?Commitment $commitment = null): ?ParsedAccountInfo
     {
-        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])['value'];
+        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, [
+            "encoding" => "jsonParsed",
+            "commitment" => $this->getCommitmentString($commitment),
+        ]])['value'];
 
         if (!$accountResponse) {
             return null;

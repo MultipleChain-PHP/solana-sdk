@@ -22,7 +22,7 @@ class SplTokenProgramTest extends TestCase
 
     private string $tokenAccount = 'F723Hbpe6vNYiBY5rwXpq7e1P2hcH9en1tET6QHji2TZ';
 
-    private string $nftId = 'FxN19KB5UeZJFwxLFgT57WvYYXYhBFKxVumfq37xU4Ck';
+    private string $token2022 = 'FQPbc46pp1b3QWHFJFfsvQrv7YedX8XEum5c18mLnipE';
 
     private Keypair $keypair;
 
@@ -172,5 +172,26 @@ class SplTokenProgramTest extends TestCase
         );
 
         $this->assertEquals('BEBCDwAAAAAA', $instruction->data->toBase64String());
+    }
+
+    /**
+     * @return void
+     */
+    public function testSplToken2022Metadata(): void
+    {
+        $metadata = SplTokenProgram::getTokenMetadata(
+            $this->connection,
+            new PublicKey($this->token2022),
+        );
+
+        $this->assertEquals($metadata, [
+            'updateAuthority' => 'B8kLt8MZk6cPqdrZKbRwdnh2y1mz5nk6jHFMsRDni6Ei',
+            'mint' => 'FQPbc46pp1b3QWHFJFfsvQrv7YedX8XEum5c18mLnipE',
+            'name' => 'Example Token 2022',
+            'symbol' => 'EXM2',
+            'uri' => 'https://ipfs.io/ipfs/QmbCqWPgDvVGsQoCNCq1Z32fhZkgMDiiqpoaCkE9aH9Yvk?filename=metadata.json',
+            'additionalMetadata' => [],
+            'decimals' => 9
+        ]);
     }
 }

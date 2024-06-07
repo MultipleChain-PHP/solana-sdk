@@ -7,6 +7,7 @@ namespace MultipleChain\SolanaSDK\Programs;
 use MultipleChain\SolanaSDK\Program;
 use MultipleChain\SolanaSDK\Keypair;
 use MultipleChain\SolanaSDK\PublicKey;
+use MultipleChain\SolanaSDK\Connection;
 use MultipleChain\SolanaSDK\Util\Signer;
 use MultipleChain\SolanaSDK\Util\Buffer;
 use MultipleChain\SolanaSDK\Util\AccountMeta;
@@ -40,6 +41,38 @@ class SplTokenProgram extends Program
      * @var int
      */
     public const APPROVE = 4;
+
+    /**
+     * @param Connection $connection
+     * @param PublicKey $address
+     * @param Commitment|null $commitment
+     * @param PublicKey|null $programId
+     * @return array<mixed>|null
+     */
+    public static function getTokenMetadata(
+        Connection $connection,
+        PublicKey $address,
+        ?Commitment $commitment = null,
+        ?PublicKey $programId = null
+    ): ?array {
+        $programId = $programId ?? new PublicKey(self::SOLANA_TOKEN_PROGRAM_2022);
+        $info = $connection->getParsedAccountInfo($address->toString(), $commitment);
+        $parsedInfo = $info->getData()->getParsed()['info'];
+        $tokenMetadata = array_reduce($parsedInfo['extensions'], function ($carry, $item) {
+            if ('tokenMetadata' === $item['extension']) {
+                $carry = $item['state'];
+            }
+            return $carry;
+        });
+
+        if (null === $tokenMetadata) {
+            return null;
+        }
+
+        return array_merge($tokenMetadata, [
+            'decimals' => $parsedInfo['decimals'],
+        ]);
+    }
 
     /**
      * @param PublicKey $mint
