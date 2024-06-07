@@ -86,6 +86,19 @@ class Buffer implements Countable
     }
 
     /**
+     * Allocate a new buffer with the given size and fill it with the given value.
+     *
+     * @param int $size The size of the buffer to allocate.
+     * @param int $fill The value to fill the buffer with.
+     * @return Buffer
+     */
+    public static function alloc(int $size, int $fill = 0): Buffer
+    {
+        $data = array_fill(0, $size, $fill);
+        return new Buffer($data);
+    }
+
+    /**
      * @param mixed $value
      * @param ?string $format
      * @param ?bool $signed
@@ -115,6 +128,19 @@ class Buffer implements Countable
     public function getData(): array
     {
         return $this->data;
+    }
+
+    /**
+     * Compare this Buffer with another Buffer to check for equality.
+     *
+     * @param Buffer $other
+     * @return bool
+     */
+    public function equals(Buffer $other): bool
+    {
+        return $this->datatype === $other->datatype &&
+            $this->signed === $other->signed &&
+            $this->data === $other->data;
     }
 
     /**
@@ -221,6 +247,16 @@ class Buffer implements Countable
     public function toBase58String(): string
     {
         return PublicKey::base58()->encode($this->toString());
+    }
+
+    /**
+     * Return base64 string representation of $value.
+     *
+     * @return string
+     */
+    public function toBase64String(): string
+    {
+        return base64_encode($this->toString());
     }
 
     /**

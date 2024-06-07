@@ -8,7 +8,6 @@ use MultipleChain\SolanaSDK\Program;
 use MultipleChain\SolanaSDK\PublicKey;
 use MultipleChain\SolanaSDK\Util\AccountMeta;
 use MultipleChain\SolanaSDK\TransactionInstruction;
-use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
 
 class SystemProgram extends Program
 {
@@ -23,21 +22,6 @@ class SystemProgram extends Program
     public static function programId(): PublicKey
     {
         return new PublicKey('11111111111111111111111111111111');
-    }
-
-    /**
-     * @param string $pubKey
-     * @return array<mixed>
-     */
-    public function getAccountInfo(string $pubKey): array
-    {
-        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])['value'];
-
-        if (! $accountResponse) {
-            throw new AccountNotFoundException("API Error: Account {$pubKey} not found.");
-        }
-
-        return $accountResponse;
     }
 
     /**

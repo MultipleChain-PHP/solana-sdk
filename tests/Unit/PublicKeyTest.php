@@ -7,6 +7,7 @@ namespace MultipleChain\SolanaSDK\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use MultipleChain\SolanaSDK\Keypair;
 use MultipleChain\SolanaSDK\PublicKey;
+use MultipleChain\SolanaSDK\Util\Buffer;
 
 class PublicKeyTest extends TestCase
 {
@@ -149,13 +150,13 @@ class PublicKeyTest extends TestCase
         $programId = new PublicKey('BPFLoader1111111111111111111111111111111111');
 
         list($programAddress, $nonce) = PublicKey::findProgramAddress(
-            [''],
+            [Buffer::from('')],
             $programId
         );
 
         $this->assertEquals(
             PublicKey::createProgramAddress([
-                '',
+                Buffer::from(''),
                 [$nonce],
             ], $programId),
             $programAddress

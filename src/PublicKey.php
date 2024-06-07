@@ -73,7 +73,17 @@ class PublicKey implements HasPublicKey
      */
     public function equals(PublicKey $publicKey): bool
     {
-        return $publicKey->buffer === $this->buffer;
+        return $publicKey->buffer->equals($this->buffer);
+    }
+
+    /**
+     * Check if a base-58 encoded public key string is equal to this public key
+     * @param string $base58String
+     * @return bool
+     */
+    public function equalsBase58(string $base58String): bool
+    {
+        return strtolower($this->toBase58()) === strtolower($base58String);
     }
 
     /**
@@ -155,7 +165,7 @@ class PublicKey implements HasPublicKey
     /**
      * Derive a program address from seeds and a program ID.
      *
-     * @param array<mixed> $seeds
+     * @param array<Buffer|string|int|array<int>> $seeds
      * @param PublicKey $programId
      * @return PublicKey
      */
@@ -163,7 +173,7 @@ class PublicKey implements HasPublicKey
     {
         $buffer = new Buffer();
         foreach ($seeds as $seed) {
-            $seed = Buffer::from($seed);
+            $seed = $seed instanceof Buffer ? $seed : Buffer::from($seed);
             if (sizeof($seed) > self::MAX_SEED_LENGTH) {
                 throw new InputValidationException("Max seed length exceeded.");
             }
@@ -183,7 +193,7 @@ class PublicKey implements HasPublicKey
     }
 
     /**
-     * @param array<mixed> $seeds
+     * @param array<Buffer|string> $seeds
      * @param PublicKey $programId
      * @return array<mixed> 2 elements, [0] = PublicKey, [1] = integer
      */
@@ -214,9 +224,15 @@ class PublicKey implements HasPublicKey
     public static function isOnCurve(mixed $publicKey): bool
     {
         try {
-            $binaryString = $publicKey instanceof PublicKey
-                ? $publicKey->toBinaryString()
-                : $publicKey;
+            if ($publicKey instanceof Buffer) {
+                $binaryString = $publicKey->toString();
+            } elseif ($publicKey instanceof PublicKey) {
+                $binaryString = $publicKey->toBinaryString();
+            } elseif (is_string($publicKey)) {
+                $binaryString = $publicKey;
+            } else {
+                throw new InputValidationException('Invalid public key input.');
+            }
 
             /**
              * Sodium extension method sometimes returns "conversion failed" exception.

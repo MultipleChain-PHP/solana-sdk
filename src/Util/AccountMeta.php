@@ -8,7 +8,7 @@ use MultipleChain\SolanaSDK\PublicKey;
 
 class AccountMeta implements HasPublicKey
 {
-    protected PublicKey $publicKey;
+    public PublicKey $publicKey;
     public bool $isSigner;
     public bool $isWritable;
 
