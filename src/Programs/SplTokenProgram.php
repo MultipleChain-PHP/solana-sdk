@@ -197,7 +197,7 @@ class SplTokenProgram extends Program
         return new TransactionInstruction(
             $programId,
             $keys,
-            $data->getData()
+            $data
         );
     }
 
@@ -234,7 +234,7 @@ class SplTokenProgram extends Program
         return new TransactionInstruction(
             $programId,
             $keys,
-            $data->getData()
+            $data
         );
     }
 }

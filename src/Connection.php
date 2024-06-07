@@ -10,7 +10,6 @@ use MultipleChain\SolanaSDK\Util\Commitment;
 use MultipleChain\SolanaSDK\Types\ParsedAccountInfo;
 use MultipleChain\SolanaSDK\Types\ParsedTokenAccount;
 use MultipleChain\SolanaSDK\Types\ParsedTransactionWithMeta;
-use MultipleChain\SolanaSDK\Exceptions\AccountNotFoundException;
 
 class Connection extends Program
 {
@@ -105,6 +104,16 @@ class Connection extends Program
     public function getSlot(): int
     {
         return $this->client->call('getSlot')['value'];
+    }
+
+    /**
+     * @param string $method
+     * @param array<mixed> $params
+     * @return array<mixed>
+     */
+    public function call(string $method, array $params = []): mixed
+    {
+        return $this->client->call($method, $params);
     }
 
     /**

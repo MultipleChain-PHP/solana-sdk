@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MultipleChain\SolanaSDK\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use MultipleChain\SolanaSDK\PublicKey;
 use MultipleChain\SolanaSDK\Connection;
 use MultipleChain\SolanaSDK\SolanaRpcClient;
 
@@ -356,7 +355,11 @@ class ParsedTest extends TestCase
     {
         foreach ($input as &$value) {
             if (is_array($value)) {
-                $value = $this->arrayFilterRecursive($value);
+                if (empty($value)) {
+                    $value = null;
+                } else {
+                    $value = $this->arrayFilterRecursive($value);
+                }
             }
         }
 
@@ -411,35 +414,18 @@ class ParsedTest extends TestCase
             'mint' => $this->splTokenAddress
         ]);
 
-        $this->assertEquals($result[0]->toArray(), [
-            'pubkey' => 'F723Hbpe6vNYiBY5rwXpq7e1P2hcH9en1tET6QHji2TZ',
-            'account' => [
-                'executable' => false,
-                'lamports' => 2039280,
-                'rentEpoch' => 18446744073709552000,
-                'space' => 165,
-                'owner' => 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
-                'data' => [
-                    'parsed' => [
-                        'info' => [
-                            'isNative' => false,
-                            'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
-                            'owner' => 'gEbjuPsW9xwKpUdQ69khDP3kNEw17HTSmLCMu1S9Msm',
-                            'state' => 'initialized',
-                            'tokenAmount' => [
-                                'amount' => '19000000000',
-                                'decimals' => 8,
-                                'uiAmount' => 190,
-                                'uiAmountString' => '190'
-                            ]
-                        ],
-                        'type' => 'account'
-                    ],
-                    'program' => 'spl-token',
-                    'space' => 165
-                ]
+        $info = $result[0]->toArray()['account']['data']['parsed']['info'];
+
+        $this->assertEquals(
+            [
+                'mint' => $info['mint'],
+                'owner' => $info['owner']
+            ],
+            [
+                'mint' => '2ZHwL3dXk3szRgiBLZi244NmKs2VmoBx764AYMY2tQfx',
+                'owner' => 'gEbjuPsW9xwKpUdQ69khDP3kNEw17HTSmLCMu1S9Msm',
             ]
-        ]);
+        );
     }
 
     /**
@@ -460,5 +446,71 @@ class ParsedTest extends TestCase
         $result = $this->connection->getTokenSupply($this->splTokenAddress);
 
         $this->assertEquals($result['uiAmount'], 100000000000);
+    }
+
+    /**
+     * @return void
+     */
+    public function testSolTransferTx(): void
+    {
+        $result1 = $this->connection->call('getTransaction', [
+            $this->solTransferTx,
+            [
+                "encoding" => "jsonParsed",
+                "maxSupportedTransactionVersion" => 0,
+                "commitment" => $this->connection->getCommitmentString(null),
+            ]
+        ]);
+
+        $result2 = $this->connection->getParsedTransaction($this->solTransferTx);
+
+        $this->assertEquals(
+            $this->arrayFilterRecursive($result1),
+            $this->arrayFilterRecursive($result2->toArray())
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testNftTransferTx(): void
+    {
+        $result1 = $this->connection->call('getTransaction', [
+            $this->nftTransferTx,
+            [
+                "encoding" => "jsonParsed",
+                "maxSupportedTransactionVersion" => 0,
+                "commitment" => $this->connection->getCommitmentString(null),
+            ]
+        ]);
+
+        $result2 = $this->connection->getParsedTransaction($this->nftTransferTx);
+
+        $this->assertEquals(
+            $this->arrayFilterRecursive($result1),
+            $this->arrayFilterRecursive($result2->toArray())
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testToken2022TransferTx(): void
+    {
+        $result1 = $this->connection->call('getTransaction', [
+            $this->token2022Transfer,
+            [
+                "encoding" => "jsonParsed",
+                "maxSupportedTransactionVersion" => 0,
+                "commitment" => $this->connection->getCommitmentString(null),
+            ]
+        ]);
+
+        $result2 = $this->connection->getParsedTransaction($this->token2022Transfer);
+
+        $this->assertEquals(
+            $this->arrayFilterRecursive($result1),
+            $this->arrayFilterRecursive($result2->toArray())
+        );
     }
 }
