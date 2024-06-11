@@ -106,7 +106,7 @@ class Connection extends Program
      */
     public function getSlot(): int
     {
-        return $this->client->call('getSlot')['value'];
+        return $this->client->call('getSlot');
     }
 
     /**
