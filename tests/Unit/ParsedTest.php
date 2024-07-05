@@ -439,7 +439,7 @@ class ParsedTest extends TestCase
     {
         $result = $this->connection->getTokenLargestAccounts($this->nftId);
 
-        $this->assertEquals($result[0]['address'], '3WdxNZnmmcFCNtW7VixRZJNtK1CKpN8GK1kpFReaEZMd');
+        $this->assertEquals($result[0]['address'], 'tHrUF4QuWR2zscQ3vm6n5uEqwci4wQcv2ARQD9pHpVV');
     }
 
     /**
