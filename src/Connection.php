@@ -94,9 +94,9 @@ class Connection extends Program
 
     /**
      * @param string $pubKey
-     * @return float
+     * @return int
      */
-    public function getBalance(string $pubKey): float
+    public function getBalance(string $pubKey): int
     {
         return $this->client->call('getBalance', [$pubKey])['value'];
     }
@@ -124,35 +124,38 @@ class Connection extends Program
      *
      * @param string $signature
      * @param Commitment|null $commitment
-     * @param int $timeout
      * @return bool
      */
-    public function confirmTransaction(string $signature, ?Commitment $commitment = null, int $timeout = 60000): bool
+    public function confirmTransaction(string $signature, ?Commitment $commitment = null): bool
     {
-        $startTime = microtime(true);
-        $latestBlockhashInfo = $this->getLatestBlockhash($commitment);
-        $lastValidBlockHeight = $latestBlockhashInfo['lastValidBlockHeight'];
-
-        while ((microtime(true) - $startTime) * 1000 < $timeout) {
-            $transactionResult = $this->getTransaction($signature, $commitment);
-
-            if (null !== $transactionResult) {
-                if (isset($transactionResult['meta']['err']) && null !== $transactionResult['meta']['err']) {
-                    return false;
-                }
-                return true;
-            }
-
-            $currentBlockHeight = $this->getSlot();
-            if ($currentBlockHeight > $lastValidBlockHeight) {
-                return false;
-            }
-
-            // Wait for a while before retrying
-            usleep(500000); // 500ms
+        $result = $this->getSignatureStatus($signature, $commitment);
+        while ('finalized' !== $result['confirmationStatus']) {
+            $result = $this->getSignatureStatus($signature, $commitment);
         }
+        return true;
+    }
 
-        throw new \Exception('Transaction confirmation timed out');
+    /**
+     * @param Commitment|null $commitment
+     * @return int
+     */
+    public function getBlockHeight(?Commitment $commitment = null): int
+    {
+        return $this->client->call('getBlockHeight', [[
+            "commitment" => $this->getCommitmentString($commitment),
+        ]]);
+    }
+
+    /**
+     * @param string $signature
+     * @param Commitment|null $commitment
+     * @return array<mixed>
+     */
+    public function getSignatureStatus(string $signature, ?Commitment $commitment = null): array
+    {
+        return $this->client->call('getSignatureStatuses', [[$signature], [
+            "searchTransactionHistory" => true
+        ]])['value'][0];
     }
 
     /**
