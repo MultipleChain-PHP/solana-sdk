@@ -128,9 +128,12 @@ class Connection extends Program
      */
     public function confirmTransaction(string $signature, ?Commitment $commitment = null): bool
     {
+        $commitment = $commitment ?? Commitment::finalized();
         $result = $this->getSignatureStatus($signature, $commitment);
-        while ('finalized' !== $result['confirmationStatus']) {
+        $signatureCommitment = Commitment::fromString($result['confirmationStatus']);
+        while (!Commitment::equals($commitment, $signatureCommitment)) {
             $result = $this->getSignatureStatus($signature, $commitment);
+            $signatureCommitment = Commitment::fromString($result['confirmationStatus']);
         }
         return true;
     }
