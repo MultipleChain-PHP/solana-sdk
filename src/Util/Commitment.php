@@ -57,6 +57,25 @@ class Commitment
     }
 
     /**
+     * @param string $commitmentLevel
+     * @return Commitment
+     */
+    public static function fromString(string $commitmentLevel): Commitment
+    {
+        return new Commitment($commitmentLevel);
+    }
+
+    /**
+     * @param Commitment $commitment1
+     * @param Commitment $commitment2
+     * @return bool
+     */
+    public static function equals(Commitment $commitment1, Commitment $commitment2): bool
+    {
+        return $commitment1->__toString() === $commitment2->__toString();
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string
